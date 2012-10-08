@@ -75,9 +75,9 @@ static unsigned long mmap_rnd(void)
 	*/
 	if (current->flags & PF_RANDOMIZE) {
 		if (mmap_is_ia32())
-			rnd = get_random_int() % (1<<8);
+			rnd = get_random_long() % (1UL<<8);
 		else
-			rnd = get_random_int() % (1<<28);
+			rnd = get_random_long() % (1UL<<28);
 	}
 	return rnd << PAGE_SHIFT;
 }
@@ -118,9 +118,7 @@ void arch_pick_mmap_layout(struct mm_struct *mm)
 	if (mmap_is_legacy()) {
 		mm->mmap_base = mm->mmap_legacy_base;
 		mm->get_unmapped_area = arch_get_unmapped_area;
-		mm->unmap_area = arch_unmap_area;
 	} else {
 		mm->get_unmapped_area = arch_get_unmapped_area_topdown;
-		mm->unmap_area = arch_unmap_area_topdown;
 	}
 }
